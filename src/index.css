@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-publicSans: "Public Sans", sans-serif;
+  --breakpoint-lg: 90rem;
+
+  --color-beige500: #98908b;
+  --color-beige100: #f8f4f0;
+  --color-grey900: #201f24;
+  --color-grey500: #696868;
+  --color-grey300: #b3b3b3;
+  --color-grey100: #f2f2f2;
+  --color-green: #277c78;
+  --color-yellow: #f2cdac;
+  --color-cyan: #82c9d7;
+  --color-navy: #626070;
+  --color-red: #c94736;
+  --color-purple10: #826cb0;
+  --color-purple20: #af81ba;
+  --color-turquoise: #597c7c;
+  --color-brown: #93674f;
+  --color-mangeta: #934f6f;
+  --color-blue: #3f82b2;
+  --color-navyGrey: #97a0ac;
+  --color-armyGreen: #7f9161;
+  --color-gold: #cab361;
+  --color-orange: #be6c49;
+
+  --text-preset1: 32px;
+  --text-preset1--line-height: 130%;
+
+  --text-preset2: 20px;
+  --text-preset2--line-height: 120%;
+
+  --text-preset3: 16px;
+  --text-preset3--line-height: 150%;
+
+  --text-preset4: 14px;
+  --text-preset4--line-height: 150%;
+
+  --text-preset5: 12px;
+  --text-preset5--line-height: 150%;
+}

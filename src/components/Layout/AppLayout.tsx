@@ -6,7 +6,7 @@ function AppLayout() {
   return (
     <>
       <div className="flex flex-col font-publicSans lg:hidden bg-beige100">
-        <main className="overflow-y-auto  px-4 py-6 md:px-10 md:py-8">
+        <main className="overflow-y-auto  px-4 pt-6 pb-31 md:px-10 md:pt-8 md:pb-33">
           <Outlet />
         </main>
         <BottomNav />

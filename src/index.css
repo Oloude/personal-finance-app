@@ -42,3 +42,7 @@
   --text-preset5: 12px;
   --text-preset5--line-height: 150%;
 }
+
+button{
+  cursor: pointer;
+}

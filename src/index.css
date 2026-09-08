@@ -41,6 +41,8 @@
 
   --text-preset5: 12px;
   --text-preset5--line-height: 150%;
+
+  --shadow-dropdown : 0 4px 24px 0 rgba(0,0,0,0.25);
 }
 
 button{

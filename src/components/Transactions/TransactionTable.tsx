@@ -1,10 +1,9 @@
-import useFinanceState from "../../FinanceState";
+
 import  type { Transaction } from "../../FinanceState";
 import formatDate from "../../utils/FormatDate";
 import FormatAmount from "../../utils/FormatTransactionAmount";
 
-function TransactionTable() {
-    const transactions = useFinanceState(state => state.data).transactions
+function TransactionTable({transactions} :{transactions :Transaction[]}) {
     
   return <>
   <MobileTable transactions={transactions}/>
@@ -19,7 +18,7 @@ function MobileTable({transactions} :{transactions :Transaction[]}){
     return (
         <section className="flex flex-col gap-4 divide-y divide-grey100 md:hidden">
             {
-              transactions.map(transaction => <div key={transaction.name} className="flex items-center gap-3 justify-between pb-4">
+              transactions.map((transaction, i )=> <div key={`${transaction.name}-${i}`} className="flex items-center gap-3 justify-between pb-4">
                <div className="flex items-center gap-3">
                 <img src={transaction.avatar} alt="" className="w-8 h-8 rounded-full"/>
                 <div className="space-y-1">
@@ -52,7 +51,7 @@ return(
         </div>
         <div className="flex flex-col gap-4 divide-y divide-grey100">
             {
-                transactions.map(transaction => <div key={transaction.name} className="grid grid-cols-10 lg:grid-cols-12 gap-8 py-3 pb-4">
+                transactions.map((transaction, i) => <div key={`${transaction.name}-${i}`} className="grid grid-cols-10 lg:grid-cols-12 gap-8 py-3 pb-4">
                     <div className="flex items-center gap-3 col-span-4 lg:col-span-5">
                        <img src={transaction.avatar} alt="" className="w-10 h-10 rounded-full"/> 
                        <h4 className="text-preset4 text-grey900 font-bold">{transaction.name}</h4>

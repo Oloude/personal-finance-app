@@ -6,7 +6,23 @@ import SortDropdown from "./SortDropdown";
 import CategoryDropdown from "./CategoryDropdown";
 import { useState } from "react";
 
-function Filter() {
+type FilterProps = {
+  sortBy: string;
+  setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  category: string;
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+};
+
+function Filter({
+  sortBy,
+  setSortBy,
+  category,
+  setCategory,
+  searchQuery,
+  setSearchQuery,
+}: FilterProps) {
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
 
@@ -25,12 +41,24 @@ function Filter() {
         showCategoryDropdown={showCategoryDropdown}
         handleToggleShowSortDropdown={handleToggleShowSortDropdown}
         handleToggleShowCategoryDropdown={handleToggleShowCategoryDropdown}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        category={category}
+        setCategory={setCategory}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
       />
       <DesktopFilter
         showSortDropdown={showSortDropdown}
         showCategoryDropdown={showCategoryDropdown}
         handleToggleShowSortDropdown={handleToggleShowSortDropdown}
         handleToggleShowCategoryDropdown={handleToggleShowCategoryDropdown}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        category={category}
+        setCategory={setCategory}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
       />
     </>
   );
@@ -43,6 +71,12 @@ type MobileFilterProps = {
   showCategoryDropdown: boolean;
   handleToggleShowSortDropdown: () => void;
   handleToggleShowCategoryDropdown: () => void;
+  sortBy: string;
+  setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  category: string;
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function MobileFilter({
@@ -50,6 +84,12 @@ function MobileFilter({
   showCategoryDropdown,
   handleToggleShowSortDropdown,
   handleToggleShowCategoryDropdown,
+  sortBy,
+  setSortBy,
+  category,
+  setCategory,
+  searchQuery,
+  setSearchQuery,
 }: MobileFilterProps) {
   return (
     <div className="flex items-center gap-4 justify-between md:hidden">
@@ -59,6 +99,8 @@ function MobileFilter({
           name=""
           id=""
           placeholder="Search transaction"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="flex-1 min-w-0 outline-none text-beige500 text-preset4"
         />
         <button className="shrink-0 text-grey900">
@@ -66,16 +108,23 @@ function MobileFilter({
         </button>
       </div>
       <div className="flex items-center gap-6">
-        <button onClick={handleToggleShowSortDropdown} className="text-grey900 relative">
+        <button
+          onClick={handleToggleShowSortDropdown}
+          className="text-grey900 relative"
+        >
           <PiSortAscendingFill className="w-5 h-5" />
-          {showSortDropdown && <SortDropdown />}
+          {showSortDropdown && (
+            <SortDropdown sortBy={sortBy} setSortBy={setSortBy} />
+          )}
         </button>
         <button
           onClick={handleToggleShowCategoryDropdown}
           className="text-grey900 relative"
         >
           <TiFilter className="w-5 h-5" />
-          {showCategoryDropdown && <CategoryDropdown />}
+          {showCategoryDropdown && (
+            <CategoryDropdown category={category} setCategory={setCategory} />
+          )}
         </button>
       </div>
     </div>
@@ -87,6 +136,12 @@ function DesktopFilter({
   showCategoryDropdown,
   handleToggleShowSortDropdown,
   handleToggleShowCategoryDropdown,
+  sortBy,
+  setSortBy,
+  category,
+  setCategory,
+  searchQuery,
+  setSearchQuery,
 }: MobileFilterProps) {
   return (
     <div className="md:flex items-center gap-6 justify-between hidden">
@@ -95,6 +150,8 @@ function DesktopFilter({
           type="search"
           name=""
           id=""
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search transaction"
           className="flex-1 min-w-0 outline-none text-beige500 text-preset4"
         />
@@ -108,24 +165,28 @@ function DesktopFilter({
             Sort by
           </label>
           <div className="border border-beige500 rounded-lg px-5 py-3 text-preset4 text-grey900 flex items-center gap-2">
-            <span>Latest</span>
+            <span>{sortBy}</span>
             <button onClick={handleToggleShowSortDropdown}>
               <IoMdArrowDropdown className="w-4 h-4" />
             </button>
           </div>
-          {showSortDropdown && <SortDropdown />}
+          {showSortDropdown && (
+            <SortDropdown sortBy={sortBy} setSortBy={setSortBy} />
+          )}
         </div>
         <div className="flex gap-2 items-center relative">
           <label htmlFor="" className="text-beige500 text-preset4">
             Category
           </label>
           <div className="border border-beige500 rounded-lg px-4 py-3 text-preset4 text-grey900 flex items-center gap-2">
-            <span>All Transactions</span>
+            <span>{category}</span>
             <button onClick={handleToggleShowCategoryDropdown}>
               <IoMdArrowDropdown className="w-4 h-4" />
             </button>
           </div>
-          {showCategoryDropdown && <CategoryDropdown />}
+          {showCategoryDropdown && (
+            <CategoryDropdown category={category} setCategory={setCategory} />
+          )}
         </div>
       </div>
     </div>

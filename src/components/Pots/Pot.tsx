@@ -2,15 +2,26 @@ import { useState } from "react";
 import { FaEllipsis } from "react-icons/fa6";
 import PotDropdown from "./PotDropdown";
 
-type PotProps = {
+
+
+type Pot = {
   name: string;
   target: number;
   total: number;
   theme : string;
+  
 };
 
-function Pot({pot} : {pot:PotProps}) {
-    const [showDropdown, setShowDropdown] = useState(false)
+type PotProps ={
+    pot : Pot;
+    handleShowDropdown : ()=> void;
+    showDropdown : null | string;
+    id: number;
+}
+
+
+function Pot({pot, handleShowDropdown, showDropdown, id} : PotProps) {
+   
 
     const savedPercent = (pot.total/pot.target) * 100
     
@@ -20,8 +31,8 @@ function Pot({pot} : {pot:PotProps}) {
             <div className="w-4 h-4 rounded-full" style={{backgroundColor : pot.theme}}></div>
             <h3 className="text-preset2 font-bold text-grey900">{pot.name}</h3>
         </div>
-        <button onClick={()=> setShowDropdown(prev => !prev)} className="text-grey300"><FaEllipsis className="w-4 h-4" /></button>
-        {showDropdown && <PotDropdown/>}
+        <button onClick={handleShowDropdown} className="text-grey300"><FaEllipsis className="w-4 h-4" /></button>
+        {showDropdown === `${pot.name}-${id}`  && <PotDropdown/>}
     </header>
     
     <div className="flex flex-col gap-4">

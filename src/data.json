@@ -402,17 +402,17 @@
         {
             "category": "Entertainment",
             "maximum": 50.00,
-            "theme": "#277C78"
+            "theme": "#277c78"
         },
         {
             "category": "Bills",
             "maximum": 750.00,
-            "theme": "#82C9D7"
+            "theme": "#82c9d7"
         },
         {
             "category": "Dining Out",
             "maximum": 75.00,
-            "theme": "#F2CDAC"
+            "theme": "#f2cdac"
         },
         {
             "category": "Personal Care",
@@ -425,7 +425,7 @@
             "name": "Savings",
             "target": 2000.00,
             "total": 159.00,
-            "theme": "#277C78"
+            "theme": "#277c78"
         },
         {
             "name": "Concert Ticket",
@@ -437,19 +437,19 @@
             "name": "Gift",
             "target": 150.00,
             "total": 110.00,
-            "theme": "#82C9D7"
+            "theme": "#82c9d7"
         },
         {
             "name": "New Laptop",
             "target": 1000.00,
             "total": 10.00,
-            "theme": "#F2CDAC"
+            "theme": "#f2cdcd"
         },
         {
             "name": "Holiday",
             "target": 1440.00,
             "total": 531.00,
-            "theme": "#826CB0"
+            "theme": "#826cb0"
         }
     ]
 }

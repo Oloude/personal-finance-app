@@ -38,12 +38,13 @@ export type FinanceData = {
 
 type FinanceStateType = {
     data : FinanceData;
+    potsThemes : string[];   
 }
 
 
 const useFinanceState = create<FinanceStateType>((set) => ({
     data : data,
-
+    potsThemes : data.pots.map(pot => pot.theme),
 
 }))
 

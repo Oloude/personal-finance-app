@@ -15,7 +15,6 @@ function Pots() {
   function handleToggleAddNewPotModal(){
     setShowAddNewPotModal(prev => !prev)
   }
-console.log(showAddNewPotModal)
 
 
   return <div className="space-y-8">

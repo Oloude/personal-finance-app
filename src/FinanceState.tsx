@@ -39,15 +39,18 @@ export type FinanceData = {
 type FinanceStateType = {
     data : FinanceData;
     potsThemes : string[];
-    handleAddNewPot : (pot : Pot)=> void;   
+    handleAddNewPot : (pot : Pot)=> void;  
+    handleDeletePot : (pot : Pot)  => void;
+    handleEditPot : (oldPot: Pot, newPot:Pot) => void;
 }
 
 
 const useFinanceState = create<FinanceStateType>((set) => ({
     data : data,
     potsThemes : data.pots.map(pot => pot.theme),
-    handleAddNewPot : (pot) => set(state => ({data : {...state.data, pots: [...state.data.pots,pot ]}}) )
-
+    handleAddNewPot : (pot) => set(state => ({data : {...state.data, pots: [...state.data.pots,pot ]}}) ),
+    handleDeletePot : (pot) => set(state => ({data : {...state.data, balance : {...state.data.balance, current : state.data.balance.current + pot.total}, pots: state.data.pots.filter(p => p.name !== pot.name )}})),
+    handleEditPot : (oldPot, newPot) => set(state => ({data : {...state.data, pots : state.data.pots.map(p => (p.name === oldPot.name && p.target === oldPot.target) ? {...newPot}: p)}})),
 }))
 
 export default useFinanceState

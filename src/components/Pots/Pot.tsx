@@ -3,6 +3,8 @@ import { FaEllipsis } from "react-icons/fa6";
 import PotDropdown from "./PotDropdown";
 import DeletePotModal from "./DeletePotModal";
 import EditPotModal from "./EditPotModal";
+import AddToPotModal from "./AddToPotModal";
+import WithdrawPotModal from "./WithdrawPotModal";
 
 type Pot = {
   name: string;
@@ -21,6 +23,8 @@ type PotProps = {
 function Pot({ pot, handleShowDropdown, showDropdown, id }: PotProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditPotModal, setShowEditPotModal] = useState(false)
+  const [showAddToPotModal, setShowAddToPotModal] = useState(false)
+  const [showWithdrawPotModal, setShowWithdrawPotModal] = useState(false)
 
   function handleToggleShowDeleteModal() {
     setShowDeleteModal((prev) => !prev);
@@ -28,6 +32,14 @@ function Pot({ pot, handleShowDropdown, showDropdown, id }: PotProps) {
 
   function handleToggleEditPotModal(){
     setShowEditPotModal(prev => !prev)
+  }
+
+  function handleToggleShowAddToPotModal(){
+    setShowAddToPotModal(prev => !prev)
+  }
+
+  function handleToggleShowWithdrawPotModal(){
+    setShowWithdrawPotModal(prev => !prev)
   }
   
 
@@ -39,6 +51,8 @@ function Pot({ pot, handleShowDropdown, showDropdown, id }: PotProps) {
         <DeletePotModal closeModal={handleToggleShowDeleteModal} pot={pot} />
       )}
       {showEditPotModal && <EditPotModal closeModal={handleToggleEditPotModal} pot={pot}/>}
+      {showAddToPotModal && <AddToPotModal closeModal={handleToggleShowAddToPotModal} pot={pot}/>}
+      {showWithdrawPotModal && <WithdrawPotModal closeModal={handleToggleShowWithdrawPotModal} pot={pot} />}
       <header className="flex items-end justify-between">
         <div className="flex items-center gap-2">
           <div
@@ -78,10 +92,10 @@ function Pot({ pot, handleShowDropdown, showDropdown, id }: PotProps) {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <button className="px-4 py-4 rounded-lg bg-beige100 text-preset4 font-bold text-grey900 flex-1">
+        <button onClick={handleToggleShowAddToPotModal} className="px-4 py-4 rounded-lg bg-beige100 text-preset4 font-bold text-grey900 flex-1">
           + Add Money
         </button>
-        <button className="px-4 py-4 rounded-lg bg-beige100 text-preset4 font-bold text-grey900 flex-1">
+        <button onClick={handleToggleShowWithdrawPotModal} className="px-4 py-4 rounded-lg bg-beige100 text-preset4 font-bold text-grey900 flex-1">
           Withdraw
         </button>
       </div>

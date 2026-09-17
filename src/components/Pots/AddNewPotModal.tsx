@@ -139,7 +139,7 @@ function ThemeDropdown({handleSelectedThemeChange, selectedPotThemes} : ThemePro
 
 
     return (
-        <div className="px-5 py-3 flex flex-col gap-3 rounded-lg bg-white absolute left-0 bottom-16 shadow-dropdown divide-y divide-grey100 h-75 overflow-y-auto w-73">
+        <div className="px-5 py-3 flex flex-col gap-3 rounded-lg bg-white absolute left-0 bottom-16 shadow-dropdown divide-y divide-grey100 h-75 overflow-y-auto w-full">
             {
                 themes.map(({title, color}) => <button type="button" disabled={selectedPotThemes.includes(color)} onClick={()=> handleSelectedThemeChange(title, color)} className={`flex items-center gap-2 justify-between pb-3 group ${
                    selectedPotThemes.includes(color) ? 'text-grey500' : 'text-grey900' 

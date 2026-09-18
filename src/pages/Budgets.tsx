@@ -5,19 +5,30 @@
 //   - Adding a new budget should automatically pull in the three latest transactions from the created budget category and calculate the amount spent so far for August 2024.
 //   - Deleting a budget should remove it from the Budgets page and the Overview.
 
+import { useState } from "react";
 import BudgetContainer from "../components/Budgets/BudgetContainer";
 import Header from "../components/Budgets/Header";
 import SpendingSummary from "../components/Budgets/SpendingSummary";
+import AddNewBudgetModal from "../components/Budgets/AddNewBudgetModal";
 
 function Budgets() {
-  return <div className="flex flex-col gap-8">
-    <Header/>
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
-      <SpendingSummary/>
-      <BudgetContainer/>
+  const [showAddNewBudgetModal, setShowAddNewBudgetModal] = useState(false);
+
+  function handleToggleShowAddNewBudgetModal() {
+    setShowAddNewBudgetModal((prev) => !prev);
+  }
+  return (
+    <div className="flex flex-col gap-8">
+      {showAddNewBudgetModal && (
+        <AddNewBudgetModal closeModal={handleToggleShowAddNewBudgetModal} />
+      )}
+      <Header openAddNewBudgetModal={handleToggleShowAddNewBudgetModal} />
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+        <SpendingSummary />
+        <BudgetContainer />
+      </div>
     </div>
-    
-  </div>;
+  );
 }
 
 export default Budgets;

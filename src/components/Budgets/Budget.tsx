@@ -1,20 +1,41 @@
 import { FaEllipsis } from "react-icons/fa6"
 import type { Budget as BudgetType } from "../../FinanceState"
 import { MdArrowRight } from "react-icons/md"
+import BudgetDropdown from "./BudgetDropdown";
+import DeleteBudgetModal from "./DeleteBudgetModal";
+import { useState } from "react";
+import EditBudgetModal from "./EditBudgetModal";
 
 type BudgetProps = {
-    budget : BudgetType
+    budget : BudgetType;
+    handleToggleShowBudgetDropdown : (value: string) => void;
+    showBudgetDropdown : string | null;
 }
 
-export default function Budget({budget} : BudgetProps) {
+export default function Budget({budget, handleToggleShowBudgetDropdown, showBudgetDropdown} : BudgetProps) {
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [showEditBudgetModal, setShowEditBudgetModal] = useState(false)
+
+    function handleToggleShowDeleteModal(){
+        setShowDeleteModal(prev => !prev)
+    }
+
+    function handleToggleShowEditBudgetModal(){
+        setShowEditBudgetModal(prev => !prev)
+    }
+
+
   return (
     <div className="rounded-xl bg-white px-5 py-6 flex flex-col gap-5">
-        <header className="flex items-center justify-between gap-3">
+        {showDeleteModal && <DeleteBudgetModal closeModal={handleToggleShowDeleteModal}/>}
+        {showEditBudgetModal && <EditBudgetModal closeModal={handleToggleShowEditBudgetModal}/>}
+        <header className="flex items-center justify-between gap-3 relative">
             <div className="flex items-center gap-3">
                 <div className="w-4 h-4 rounded-full" style={{backgroundColor : budget.theme}}></div>
                 <h3 className="text-preset2 text-grey900 font-bold">{budget.category}</h3>
             </div>
-            <button><FaEllipsis className="w-4 h-4 text-grey300" /></button>
+            <button onClick={() => handleToggleShowBudgetDropdown(budget.category)}><FaEllipsis className="w-4 h-4 text-grey300" /></button>
+            {showBudgetDropdown === budget.category && <BudgetDropdown openDeleteModal={handleToggleShowDeleteModal} openEditBudgetModal={handleToggleShowEditBudgetModal}/>}
         </header>
         <div className="flex flex-col gap-4">
             <h4 className="text-preset4 text-grey500">Maximum of ${budget.maximum.toFixed(2)}</h4>

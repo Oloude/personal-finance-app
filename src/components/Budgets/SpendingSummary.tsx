@@ -1,9 +1,28 @@
 import useFinanceState from "../../FinanceState";
 import type  {Budget as BudgetType} from '../../FinanceState'
+import SpendingChart from "./SpendingChart";
 
 export default function SpendingSummary() {
     const budgets = useFinanceState(state => state.data).budgets
-  return <section className="flex items-center flex-col gap-8 px-5 py-6 rounded-xl bg-white">
+    let totalBudget = budgets.reduce((total, budget)=> total + budget.maximum,0)
+   let currentDegree = 0
+
+const gradientArr = budgets.map((budget) => {
+  const deg = Math.round((budget.maximum / totalBudget) * 360)
+
+  const start = currentDegree
+  const end = currentDegree + deg
+
+  currentDegree = end
+
+  return {
+    color: budget.theme,
+    start,
+    end,
+  }
+})
+  return <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-8 px-5 py-6 rounded-xl bg-white lg:col-span-2 ">
+    <SpendingChart amount={407} limit={totalBudget} gradients={gradientArr}/>
     <Summary budgets={budgets}/>
     
   </section>;
@@ -15,7 +34,7 @@ type SummaryProps = {
 
 function Summary({budgets} : SummaryProps){
     return(
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 ">
             <h2 className="text-preset2 font-bold text-grey900">Spending Summary</h2>
             <div className="flex flex-col gap-4 divide-y divide-grey100">
 {

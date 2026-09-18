@@ -12,7 +12,7 @@ import SpendingSummary from "../components/Budgets/SpendingSummary";
 function Budgets() {
   return <div className="flex flex-col gap-8">
     <Header/>
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
       <SpendingSummary/>
       <BudgetContainer/>
     </div>

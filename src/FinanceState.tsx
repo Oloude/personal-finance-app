@@ -38,23 +38,25 @@ export type FinanceData = {
 
 type FinanceStateType = {
     data : FinanceData;
-    potsThemes : string[];
+    category : string;
     handleAddNewPot : (pot : Pot)=> void;  
     handleDeletePot : (pot : Pot)  => void;
     handleEditPot : (oldPot: Pot, newPot:Pot) => void;
     handleAddToPot : (pot: Pot, addition : number) => void;
     handleWithdrawalPot : (pot: Pot, withdrawal: number) => void;
+    handleCatgoryChange : (category : string) => void;
 }
 
 
 const useFinanceState = create<FinanceStateType>((set) => ({
     data : data,
-    potsThemes : data.pots.map(pot => pot.theme),
+    category : 'All Transactions',
     handleAddNewPot : (pot) => set(state => ({data : {...state.data, pots: [...state.data.pots,pot ]}}) ),
     handleDeletePot : (pot) => set(state => ({data : {...state.data, balance : {...state.data.balance, current : state.data.balance.current + pot.total}, pots: state.data.pots.filter(p => p.name !== pot.name )}})),
     handleEditPot : (oldPot, newPot) => set(state => ({data : {...state.data, pots : state.data.pots.map(p => (p.name === oldPot.name && p.target === oldPot.target) ? {...newPot}: p)}})),
     handleAddToPot : (pot, addition) => set(state => ({data : {...state.data, balance : {...state.data.balance, current : state.data.balance.current - addition}, pots : data.pots.map(p => p.name === pot.name && p.target === pot.target ? {...p, total : p.total + addition}: p)}})),
     handleWithdrawalPot : (pot, withdrawal) => set(state => ({data : {...state.data, balance : {...state.data.balance, current : state.data.balance.current + withdrawal}, pots : data.pots.map(p => p.name === pot.name && p.target === pot.target ? {...p, total : p.total - withdrawal}: p)}})),
+    handleCatgoryChange : (category) => set({category }),
 }))
 
 export default useFinanceState

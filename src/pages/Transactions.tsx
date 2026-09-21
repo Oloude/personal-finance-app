@@ -7,9 +7,10 @@ import SortData from "../utils/SortData";
 
 function Transactions() {
   const transactions = useFinanceState((state) => state.data).transactions;
+  const category = useFinanceState(state => state.category)
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("Latest");
-  const [category, setCategory] = useState("All Transactions");
+  
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredTransactions = SortData(
@@ -49,7 +50,6 @@ function Transactions() {
           sortBy={sortBy}
           setSortBy={setSortBy}
           category={category}
-          setCategory={setCategory}
         />
         <TransactionTable transactions={visibleTransactions} />
         <Pagination

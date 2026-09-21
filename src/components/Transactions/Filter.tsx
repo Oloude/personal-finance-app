@@ -10,7 +10,6 @@ type FilterProps = {
   sortBy: string;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
   category: string;
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -19,7 +18,6 @@ function Filter({
   sortBy,
   setSortBy,
   category,
-  setCategory,
   searchQuery,
   setSearchQuery,
 }: FilterProps) {
@@ -44,7 +42,6 @@ function Filter({
         sortBy={sortBy}
         setSortBy={setSortBy}
         category={category}
-        setCategory={setCategory}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       />
@@ -56,7 +53,6 @@ function Filter({
         sortBy={sortBy}
         setSortBy={setSortBy}
         category={category}
-        setCategory={setCategory}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       />
@@ -74,7 +70,6 @@ type MobileFilterProps = {
   sortBy: string;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
   category: string;
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -87,7 +82,6 @@ function MobileFilter({
   sortBy,
   setSortBy,
   category,
-  setCategory,
   searchQuery,
   setSearchQuery,
 }: MobileFilterProps) {
@@ -123,7 +117,7 @@ function MobileFilter({
         >
           <TiFilter className="w-5 h-5" />
           {showCategoryDropdown && (
-            <CategoryDropdown category={category} setCategory={setCategory} />
+            <CategoryDropdown />
           )}
         </button>
       </div>
@@ -139,7 +133,6 @@ function DesktopFilter({
   sortBy,
   setSortBy,
   category,
-  setCategory,
   searchQuery,
   setSearchQuery,
 }: MobileFilterProps) {
@@ -185,7 +178,7 @@ function DesktopFilter({
             </button>
           </div>
           {showCategoryDropdown && (
-            <CategoryDropdown category={category} setCategory={setCategory} />
+            <CategoryDropdown  />
           )}
         </div>
       </div>

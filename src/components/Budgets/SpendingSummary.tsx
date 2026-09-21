@@ -1,56 +1,81 @@
 import useFinanceState from "../../FinanceState";
-import type  {Budget as BudgetType} from '../../FinanceState'
+import getSpentPerCategory from "../../utils/GetSpentPerCategory";
 import SpendingChart from "./SpendingChart";
 
 export default function SpendingSummary() {
-    const budgets = useFinanceState(state => state.data).budgets
-    let totalBudget = budgets.reduce((total, budget)=> total + budget.maximum,0)
-   let currentDegree = 0
+  const budgets = useFinanceState((state) => state.data).budgets;
+  let totalBudget = budgets.reduce(
+    (total, budget) => total + budget.maximum,
+    0,
+  );
+  const transactions = useFinanceState(state => state.data).transactions
+  let budgetCategories = budgets.map(budget => budget.category)
+  let currentDegree = 0;
 
-const gradientArr = budgets.map((budget) => {
-  const deg = Math.round((budget.maximum / totalBudget) * 360)
+  let spentPerCategory = getSpentPerCategory(transactions, budgetCategories)
 
-  const start = currentDegree
-  const end = currentDegree + deg
+  const gradientArr = budgets.map((budget) => {
+    const deg = Math.round((budget.maximum / totalBudget) * 360);
 
-  currentDegree = end
+    const start = currentDegree;
+    const end = currentDegree + deg;
 
-  return {
-    color: budget.theme,
-    start,
-    end,
-  }
-})
-  return <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-8 px-5 py-6 rounded-xl bg-white lg:col-span-2 ">
-    <SpendingChart amount={407} limit={totalBudget} gradients={gradientArr}/>
-    <Summary budgets={budgets}/>
-    
-  </section>;
+    currentDegree = end;
+
+    return {
+      color: budget.theme,
+      start,
+      end,
+    };
+  });
+
+  let formatedBudget = budgets.map(budget =>( {...budget, totalSpent :spentPerCategory[budget.category]}))
+  let totalAmount = formatedBudget.reduce((total, budget) => total + budget.totalSpent ,0)
+  return (
+    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-8 px-5 py-6 rounded-xl bg-white lg:col-span-2 ">
+      <SpendingChart amount={totalAmount} limit={totalBudget} gradients={gradientArr} />
+      <Summary budgets={formatedBudget} />
+    </section>
+  );
 }
 
 type SummaryProps = {
-    budgets : BudgetType[]
-}
+  budgets: {totalSpent: number;
+    category: string;
+    maximum: number;
+    theme: string;}[];
+};
 
-function Summary({budgets} : SummaryProps){
-    return(
-        <div className="flex flex-col gap-6 ">
-            <h2 className="text-preset2 font-bold text-grey900">Spending Summary</h2>
-            <div className="flex flex-col gap-4 divide-y divide-grey100">
-{
-    budgets.map(budget => <div key={budget.category} className="flex items-center gap-2 justify-between pb-2">
-        <div className="flex items-center gap-4">
-            <div className="h-5.25 w-1 rounded-full " style={{backgroundColor: budget.theme}}></div>
-            <h3 className="text-preset4 text-grey500">{budget.category}</h3>
-        </div>
-        <div className="flex items-center gap-2">
-            <span className="text-preset3 font-bold text-grey900">$250.00</span>
-            <span className="text-preset5 text-grey500">of ${budget.maximum.toFixed(2)}</span>
-        </div>
-    </div>)
-}
-
+function Summary({ budgets }: SummaryProps) {
+  return (
+    <div className="flex flex-col gap-6 ">
+      <h2 className="text-preset2 font-bold text-grey900">Spending Summary</h2>
+      <div className="flex flex-col gap-4 divide-y divide-grey100">
+        {budgets.map((budget) => (
+          <div
+            key={budget.category}
+            className="flex items-center gap-2 justify-between pb-2"
+          >
+            <div className="flex items-center gap-4">
+              <div
+                className="h-5.25 w-1 rounded-full "
+                style={{ backgroundColor: budget.theme }}
+              >
+                
+              </div>
+              <h3 className="text-preset4 text-grey500">{budget.category}</h3>
             </div>
-        </div>
-    )
+            <div className="flex items-center gap-2">
+              <span className="text-preset3 font-bold text-grey900">
+                ${budget.totalSpent.toFixed(2)}
+              </span>
+              <span className="text-preset5 text-grey500">
+                of ${budget.maximum.toFixed(2)}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }

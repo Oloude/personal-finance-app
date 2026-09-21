@@ -5,6 +5,12 @@ import BudgetDropdown from "./BudgetDropdown";
 import DeleteBudgetModal from "./DeleteBudgetModal";
 import { useState } from "react";
 import EditBudgetModal from "./EditBudgetModal";
+import useFinanceState from "../../FinanceState";
+import getSpentPerCategory from "../../utils/GetSpentPerCategory";
+import lastestSpendingByCategory from "../../utils/LastThreeSpendingByCategory";
+import type { Transaction } from "../../FinanceState";
+import FormatAmount from "../../utils/FormatTransactionAmount";
+import formatDate from "../../utils/FormatDate";
 
 type BudgetProps = {
     budget : BudgetType;
@@ -15,6 +21,12 @@ type BudgetProps = {
 export default function Budget({budget, handleToggleShowBudgetDropdown, showBudgetDropdown} : BudgetProps) {
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [showEditBudgetModal, setShowEditBudgetModal] = useState(false)
+    const budgets = useFinanceState(state => state.data).budgets
+    const transactions = useFinanceState(state => state.data).transactions
+    let budgetCategory = budgets.map(budget => budget.category)
+
+    let spentByCategory = getSpentPerCategory(transactions, budgetCategory)
+    let spendingByCategory = lastestSpendingByCategory(transactions, budgetCategory)
 
     function handleToggleShowDeleteModal(){
         setShowDeleteModal(prev => !prev)
@@ -24,6 +36,7 @@ export default function Budget({budget, handleToggleShowBudgetDropdown, showBudg
         setShowEditBudgetModal(prev => !prev)
     }
 
+    console.log(spendingByCategory[budget.category].slice(0,3))
 
   return (
     <div className="rounded-xl bg-white px-5 py-6 flex flex-col gap-5">
@@ -40,21 +53,21 @@ export default function Budget({budget, handleToggleShowBudgetDropdown, showBudg
         <div className="flex flex-col gap-4">
             <h4 className="text-preset4 text-grey500">Maximum of ${budget.maximum.toFixed(2)}</h4>
             <div className="bg-beige100 rounded p-1 h-8 flex">
-
+              <span className="h-full rounded" style={{backgroundColor : budget.theme, width : `${(spentByCategory[budget.category] / budget.maximum) * 100}%`}}></span>
             </div>
             <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-4">
                     <div className="h-10.75 w-1 rounded-full " style={{backgroundColor: budget.theme}}></div>
                     <div className="flex flex-col gap-1">
                         <h5 className="text-preset5 text-grey500">Spent</h5>
-                        <span className="text-preset4 font-bold text-grey900">$25.00</span>
+                        <span className="text-preset4 font-bold text-grey900">${spentByCategory[budget.category].toFixed(2)}</span>
                     </div>
                 </div>
                  <div className="flex items-center gap-4">
                     <div className="h-10.75 w-1 rounded-full bg-beige100" ></div>
                     <div className="flex flex-col gap-1">
                         <h5 className="text-preset5 text-grey500">Free</h5>
-                        <span className="text-preset4 font-bold text-grey900">$25.00</span>
+                        <span className="text-preset4 font-bold text-grey900">${budget.maximum - spentByCategory[budget.category] < 0 ? 0: ( budget.maximum - spentByCategory[budget.category]).toFixed(2)}</span>
                     </div>
                 </div>
             </div>
@@ -72,7 +85,7 @@ export default function Budget({budget, handleToggleShowBudgetDropdown, showBudg
             </header>
             <div className="flex flex-col gap-3 divide-y divide-grey500/20">
                 {
-                    [1,2,3,].map(i => <BudgetDetails key={i}/>)
+                    spendingByCategory[budget.category].slice(0,3).map((transaction, i) => <BudgetDetails key={`${transaction.name}-${i}`} transaction={transaction}/>)
                 }
             </div>
 
@@ -81,17 +94,21 @@ export default function Budget({budget, handleToggleShowBudgetDropdown, showBudg
   )
 }
 
+type BudgetDetailsProps = {
+    transaction : Transaction
+}
 
-function BudgetDetails(){
+
+function BudgetDetails({transaction} : BudgetDetailsProps){
     return (
         <div className="flex items-center justify-between gap-4 pb-3">
             <div className="flex items-center gap-3">
-                <img src="" alt="" className="hidden w-10 h-10 rounded-full" />
-                <h4 className="text-preset5 font-bold text-grey900">Charlie Electric Company</h4>
+                <img src={transaction.avatar} alt="" className="hidden w-10 h-10 rounded-full md:inline" />
+                <h4 className="text-preset5 font-bold text-grey900">{transaction.name}</h4>
             </div>
             <div className="flex flex-col items-end gap-1">
-                <span className="text-preset5 font-bold text-grey900">-$100.00</span>
-                <span className="text-preset5 text-grey500">1 Aug 2024</span>
+                {FormatAmount(transaction.amount)}
+                <span className="text-preset5 text-grey500">{formatDate(transaction.date)}</span>
             </div>
         </div>
     )

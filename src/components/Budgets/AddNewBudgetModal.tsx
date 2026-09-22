@@ -10,7 +10,7 @@ type AddNewBudgetProps = {
 
 export default function AddNewBudgetModal({ closeModal }:AddNewBudgetProps) {
   const budgets = useFinanceState((state) => state.data).budgets;
-  const handleAddNewPot = useFinanceState((state) => state.handleAddNewPot);
+  const handleAddNewBudget = useFinanceState((state) => state.handleAddNewBudget);
   const budgetThemes = budgets.map((budget) => budget.theme);
   const budgetCategories = budgets.map((b) => b.category);
   const categories = [
@@ -77,13 +77,12 @@ export default function AddNewBudgetModal({ closeModal }:AddNewBudgetProps) {
     if (error.category || error.maximumSpend || error.theme) {
       return;
     }
-    let pot = {
-      name: formData.category.trim(),
-      target: Number(formData.maximumSpend.trim()),
+    let budget = {
+      category: formData.category.trim(),
+      maximum: Number(formData.maximumSpend.trim()),
       theme: formData.theme,
-      total: 0,
     };
-    handleAddNewPot(pot);
+    handleAddNewBudget(budget);
     closeModal();
   }
 
@@ -117,7 +116,7 @@ export default function AddNewBudgetModal({ closeModal }:AddNewBudgetProps) {
               onClick={() => setShowCategoryDropdown((prev) => !prev)}
               className="px-5 py-3 border border-beige500 rounded-lg text-preset4 text-beige500 flex items-center justify-between"
             >
-              <span className="text-preset4">{selectedCategory}</span>
+              <span className="text-preset4 text-grey900">{selectedCategory}</span>
 
               <button type="button">
                 <IoMdArrowDropdown className="w-4 h-4 text-grey900" />
@@ -170,7 +169,7 @@ export default function AddNewBudgetModal({ closeModal }:AddNewBudgetProps) {
                   className="w-4 h-4 rounded-full"
                   style={{ backgroundColor: selectedTheme.color }}
                 ></div>
-                <span className="text-preset4">{selectedTheme.title}</span>
+                <span className="text-preset4 text-grey900">{selectedTheme.title}</span>
               </div>
               <button type="button">
                 <IoMdArrowDropdown className="w-4 h-4 text-grey900" />

@@ -3,14 +3,30 @@ import { FaDollarSign } from "react-icons/fa6";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import useFinanceState from "../../FinanceState";
 import { IoMdArrowDropdown } from "react-icons/io";
+import type { Budget as BudgetType } from "../../FinanceState";
 
 type EditBudgetProps = {
   closeModal: () => void;
+  budget : BudgetType;
 };
 
-export default function EditBudgetModal({ closeModal }: EditBudgetProps) {
+ const themes = [
+    { title: "Green", color: "#277c78" },
+    { title: "Yellow", color: "#f2cdac" },
+    { title: "Cyan", color: "#82c9d7" },
+    { title: "Navy", color: "#626070" },
+    { title: "Red", color: "#c94736" },
+    { title: "Purple", color: "#826cb0" },
+    { title: "Turquoise", color: "#597c7c" },
+    { title: "Brown", color: "#93674f" },
+    { title: "Magenta", color: "#934f6f" },
+    { title: "Blue", color: "#3f82b2" },
+    { title: "Grey", color: "#97a0ac" },
+  ];
+
+export default function EditBudgetModal({ closeModal, budget }: EditBudgetProps) {
   const budgets = useFinanceState((state) => state.data).budgets;
-  const handleAddNewPot = useFinanceState((state) => state.handleAddNewPot);
+  const handleEditBudget = useFinanceState((state) => state.handleEditBudget);
   const budgetThemes = budgets.map((budget) => budget.theme);
   const budgetCategories = budgets.map((b) => b.category);
   const categories = [
@@ -22,9 +38,9 @@ export default function EditBudgetModal({ closeModal }: EditBudgetProps) {
   ];
 
   const [formData, setFormData] = useState({
-    category: "",
-    maximumSpend: "",
-    theme: "",
+    category: budget.category,
+    maximumSpend: budget.maximum.toString(),
+    theme: budget.theme,
   });
   const [formError, setFormError] = useState({
     category: "",
@@ -32,11 +48,11 @@ export default function EditBudgetModal({ closeModal }: EditBudgetProps) {
     theme: "",
   });
   const [showThemeDropdown, setShowThemeDropdown] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState({
-    title: "Green",
-    color: "#277c78",
+  const [selectedTheme, setSelectedTheme] = useState(()=>{
+    let selected =themes.find(theme => budget.theme === theme.color)
+    return  selected ? selected : { title: "Green", color: "#277c78" }
   });
-  const [selectedCategory, setSelectedCategory] = useState("Enternainment");
+  const [selectedCategory, setSelectedCategory] = useState(budget.category);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
 
   function handleSelectedThemeChange(title: string, color: string) {
@@ -77,13 +93,12 @@ export default function EditBudgetModal({ closeModal }: EditBudgetProps) {
     if (error.category || error.maximumSpend || error.theme) {
       return;
     }
-    let pot = {
-      name: formData.category.trim(),
-      target: Number(formData.maximumSpend.trim()),
+    let newBudget = {
+      category: formData.category.trim(),
+      maximum: Number(formData.maximumSpend.trim()),
       theme: formData.theme,
-      total: 0,
     };
-    handleAddNewPot(pot);
+    handleEditBudget(budget, newBudget);
     closeModal();
   }
 

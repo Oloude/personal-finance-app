@@ -28,7 +28,6 @@ function Bills() {
    return !(newDate.getMonth() > 6 || (newDate.getMonth() === 6 && newDate.getDate() < 19 ))
   })
 
-  console.log(uniqueBills)
 
   const dueSoon = uniqueBills.filter(bill => {
     let newDate = new Date(bill.date) 
